@@ -1,0 +1,6 @@
+streamlit 
+langchain_groq 
+python-magic
+pdfplumber
+docx2txt
+markdown
