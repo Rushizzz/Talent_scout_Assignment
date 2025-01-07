@@ -1,0 +1,4 @@
+import { s } from "../chunks/client.BM2WibkS.js";
+export {
+  s as start
+};
