@@ -41,11 +41,11 @@ This project is a web application designed to assist organizations in streamlini
 4. **Using Docker** (Optional):
    - Build the Docker image:
      ```bash
-     docker build -t talentscout-app:v1.0 .
+     docker build -t talentscout-app .
      ```
    - Run the container:
      ```bash
-     docker run -e GROQ_API_KEY='your-api-key' -p 8501:8501 talentscout-app:v1.0 
+     docker run -e GROQ_API_KEY='your-api-key' -p 8501:8501 talentscout-app
      ```
 
 ## How It Works
