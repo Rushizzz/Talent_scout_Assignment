@@ -1,71 +1,97 @@
 # TalentScout Hiring Assistant
 
-This project is a web application designed to assist organizations in streamlining their hiring process by conducting automated interviews and gathering essential candidate information.
+## Project Overview
+TalentScout is a multilingual hiring assistant chatbot built with Streamlit and Groq LLM. It automates the initial candidate screening process by conducting structured interviews in multiple languages and evaluating technical skills based on candidates' tech stacks.
 
-## Features
-- **Multilingual Support**: Conduct interviews in various languages, including English, Hindi, Spanish, and more.
-- **Automated Validation**: Validate user inputs like names, emails, phone numbers, and more using an LLM (Large Language Model).
-- **Technical Assessment**: Generate and present technical questions based on the candidate's tech stack.
-- **Session Persistence**: Maintain user session state for a seamless conversational flow.
-- **File Saving**: Save candidate information and responses for future review.
+## Installation Instructions
+1. Install required dependencies:
+```bash
+pip install streamlit langchain-groq deep-translator
+```
 
-## Tech Stack
-- **Backend**: Streamlit
-- **AI Model**: Groq LLM (using the `groq-gradio` library)
-- **Translation**: Deep Translator (powered by Google Translator API)
+2. Set environment variables:
+```bash
+export GROQ_API_KEY=your_api_key
+```
 
-## File Structure
-1. **app.py**: The main application file containing the Streamlit interface, logic for input validation, and integration with the LLM and translator.
-2. **Dockerfile**: Docker configuration for containerizing the application.
-3. **requirements.txt**: List of Python dependencies required to run the application.
+3. Run the application:
+```bash
+streamlit run app.py
+```
 
-## Setup and Installation
-1. **Clone the Repository**:
-   ```bash
-   git clone <repository_url>
-   cd <repository_name>
-   ```
+## Docker Installation
+1. Build image:
+```bash
+docker build -t talentscout .
+```
 
-2. **Install Dependencies**:
-   Make sure you have Python 3.7 or higher installed. Then, run:
-   ```bash
-   pip install -r requirements.txt
-   ```
+2. Run the container:
+```bash
+docker run -p 8501:8501 -e GROQ_API_KEY=your_api_key talentscout
+```
 
-3. **Run the Application**:
-   Execute the following command to start the Streamlit app:
-   ```bash
-   streamlit run app.py
-   ```
 
-4. **Using Docker** (Optional):
-   - Build the Docker image:
-     ```bash
-     docker build -t talentscout-app .
-     ```
-   - Run the container:
-     ```bash
-     docker run -e GROQ_API_KEY='your-api-key' -p 8501:8501 talentscout-app
-     ```
+## Usage Guide
+1. Select preferred interview language from the sidebar
+2. Answer basic questions about:
+   - Personal information (name, email, phone)
+   - Professional details (experience, position, location)
+   - Technical skills
+3. Complete technical assessment based on provided tech stack
+4. Responses are saved automatically in txt format
 
-## How It Works
-1. The application starts by greeting the candidate and asking for their preferred language.
-2. It collects basic information such as name, email, phone number, and tech stack, with real-time validation.
-3. Based on the provided tech stack, the app generates five technical questions for assessment.
-4. Candidate responses and information are saved to a timestamped file for further review.
+## Technical Details
 
-## Dependencies
-- **Streamlit**: For creating the interactive web application.
-- **groq-gradio**: For integrating Groq LLM.
-- **deep_translator**: For language translation.
+### Libraries Used
+- Streamlit: Web interface and session management
+- Langchain-Groq: LLM integration using Llama-3.3-70b
+- Deep-Translator: Multi-language support
+- txt: Data persistence
+- Datetime: Timestamp generation
 
-## Environment Variables
-To integrate this application into your environment, ensure you set the following variables:
-- **API_KEY**: For the Groq LLM service.
+### Architecture
+- Session-based state management for conversation flow
+- Two-phase interview process:
+  1. Basic information gathering
+  2. Dynamic technical assessment
+- Input validation using LLM
+- Real-time language translation
+- File-based data storage
 
-## Contribution
-Feel free to fork the repository, submit issues, or create pull requests to enhance the application.
+### Model Details
+- Model: Llama-3.3-70b-versatile
+- Temperature: 0.7 (balanced creativity and consistency)
+- Validation and question generation handled by LLM
 
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+## Prompt Design
+1. Input Validation:
+   - Structured prompts with clear validation criteria
+   - Binary valid/invalid responses
+   - Error message generation
 
+2. Technical Question Generation:
+   - Tech stack-based dynamic prompts
+   - Difficulty level distribution
+   - Focus on practical knowledge
+
+## Challenges & Solutions
+
+1. HTTPS Certificate Implementation:
+   - Challenge: Secure domain setup required for production
+   - Solution: Implemented SSL certificate
+   - Impact: Enhanced security for candidate data
+
+2. Multi-language Support:
+   - Challenge: Maintaining context across translations
+   - Solution: Implemented bidirectional translation with English as base
+   - Built-in fallback to English for failed translations
+
+3. State Management:
+   - Challenge: Maintaining conversation flow across translations
+   - Solution: Streamlit session state with structured progression
+   - Separate states for basic info and technical assessment
+
+4. Error Handling:
+   - Challenge: Graceful handling of invalid inputs
+   - Solution: LLM-based validation with specific error messages
+   - Translation of error messages to user's preferred language
